@@ -1,0 +1,9 @@
+name: GriefPreventionEconomy
+version: '${project.version}'
+main: me.luhen.griefpreventioneconomy.Main
+api-version: '1.20'
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib:2.0.0
+commands:
+  venderclaim:
+
