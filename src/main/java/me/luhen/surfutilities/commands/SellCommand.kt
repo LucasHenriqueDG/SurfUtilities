@@ -1,6 +1,6 @@
-package me.luhen.griefpreventioneconomy.commands
+package me.luhen.surfutilities.commands
 
-import me.luhen.griefpreventioneconomy.utils.SignUtils
+import me.luhen.surfutilities.utils.SignUtils
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.command.Command

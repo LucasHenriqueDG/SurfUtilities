@@ -1,10 +1,7 @@
-package me.luhen.griefpreventioneconomy.utils
+package me.luhen.surfutilities.utils
 
 
-import me.ryanhamshire.GriefPrevention.ClaimsMode
 import me.ryanhamshire.GriefPrevention.GriefPrevention
-import me.ryanhamshire.GriefPrevention.PlayerData
-import me.ryanhamshire.GriefPrevention.events.ClaimPermissionCheckEvent
 import org.bukkit.Material
 import org.bukkit.block.Sign
 import org.bukkit.entity.Player

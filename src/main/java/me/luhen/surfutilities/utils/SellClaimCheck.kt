@@ -1,15 +1,11 @@
-package me.luhen.griefpreventioneconomy.utils
+package me.luhen.surfutilities.utils
 
-import me.luhen.griefpreventioneconomy.Main
+import me.luhen.surfutilities.Main
 import me.ryanhamshire.GriefPrevention.Claim
 import me.ryanhamshire.GriefPrevention.GriefPrevention
-import net.milkbowl.vault.VaultEco
-import net.milkbowl.vault.VaultEco.VaultAccount
 import net.milkbowl.vault.economy.Economy
-import net.milkbowl.vault.economy.plugins.Economy_Essentials
 import org.bukkit.Bukkit
 import org.bukkit.Material
-import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import java.util.UUID
 

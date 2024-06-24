@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.luhen</groupId>
-    <artifactId>GriefPreventionEconomy</artifactId>
+    <artifactId>SurfUtilities</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>GriefPreventionEconomy</name>
+    <name>SurfUtilities</name>
 
     <properties>
         <java.version>17</java.version>
@@ -111,6 +111,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>chestshop-repo</id>
+            <url>https://repo.minebench.de/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -144,6 +148,12 @@
             <version>1.7</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/dependencies/Vault.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.acrobot.chestshop</groupId>
+            <artifactId>chestshop</artifactId>
+            <version>3.12</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

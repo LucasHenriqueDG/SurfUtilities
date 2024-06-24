@@ -1,4 +1,4 @@
-package me.luhen.griefpreventioneconomy.utils
+package me.luhen.surfutilities.utils
 
 import org.bukkit.Bukkit
 import org.bukkit.Material

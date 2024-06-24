@@ -1,8 +1,7 @@
-package me.luhen.griefpreventioneconomy.listeners
+package me.luhen.surfutilities.listeners
 
-import me.luhen.griefpreventioneconomy.Main
-import me.luhen.griefpreventioneconomy.utils.BuyInventory.BuyClaimInventory
-import me.ryanhamshire.GriefPrevention.GriefPrevention
+import me.luhen.surfutilities.Main
+import me.luhen.surfutilities.utils.BuyInventory.BuyClaimInventory
 import org.bukkit.Material
 import org.bukkit.block.Sign
 import org.bukkit.event.EventHandler
@@ -15,7 +14,7 @@ object SignClickEvent: Listener {
     val plugin = Main.instance
 
     @EventHandler
-    fun SignClickEvent(event: PlayerInteractEvent){
+    fun signClickEvent(event: PlayerInteractEvent){
         if(event.action == Action.RIGHT_CLICK_BLOCK){
             if(event.clickedBlock?.type == Material.OAK_SIGN){
                 val sign = event.clickedBlock!!.state as Sign
