@@ -1,0 +1,28 @@
+#GriefPrevention messages
+shop- creation-fail-msg: "§cYou must have an §eoak sign §cin your inventory and stand above a §6glowstone §cto create a sell sign."
+invalid-price-msg: "§cInvalid price value, use something from 0 to 1000000000."
+middle-item-text: "§6Are you sure you want to buy this claim?"
+cancel-item-text: "§cCancel"
+buy-item-text: "§aBuy Claim for %price%" # %price% placeholder available
+sold-claim-msg: "§2You've sold your claim for %buyer%" # %buyer% placeholder available
+purchase-msg: "§aYou've purchased this claim!"
+not-enough-money-msg: "§cYou don't have enough money to buy this claim"
+not-your-claim-msg: "§cThis claim is not yours!"
+
+#ChestShop messages
+menu-on-msg: "You've turned on the shop menu."
+menu-off-msg: "You've turned off the shop menu."
+shop-creation-error-msg: "Use the number 1 in the second line of the shop."
+shop-creation-sign-error-msg: "You must use an oak sign to create a shop."
+inventory-full-msg: "You don't have enough space in your inventory."
+not-enough-money-item-msg: "You don't have enough money to buy this item."
+empty-stock-msg: "This shop has no more items to sell."
+full-stock-msg: "This shop is full."
+no-items-inventory-msg: "You don't have this item to sell."
+owner-no-money-msg: "The shop owner doesn't have enough money to buy this item."
+sell-item-name-text: "§cSell 1"
+sell-item-lore:
+  - "Shift + Click = Sell all"
+buy-item-name-text: "§aBuy 1"
+buy-item-lore:
+  - "Shift + Click = Buy 64"

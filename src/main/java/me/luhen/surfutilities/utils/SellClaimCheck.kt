@@ -37,15 +37,15 @@ object SellClaimCheck {
 
 
             if ((sellerPlayer is Player)) {
-                sellerPlayer.sendMessage("§2You've sold your claim for ${buyer.name}")
+                sellerPlayer.sendMessage(plugin.config.getString("sold-claim-msg")?.replace("%buyer%", buyer.name))
             }
 
             GriefPrevention.instance.dataStore.changeClaimOwner(claim, buyer.uniqueId)
             VaultUtils.transferMoney(buyer, seller, price.toDouble())
-            buyer.sendMessage("§aYou've purchased this claim!")
+            buyer.sendMessage(plugin.config.getString("purchase-msg"))
 
         } else {
-            buyer.sendMessage("§cYou don't have enough money to buy this claim")
+            buyer.sendMessage(plugin.config.getString("not-enough-money-msg"))
         }
     }
 

@@ -77,21 +77,21 @@ object OnInventoryClick: Listener {
                     //Checks the player's inventory
                     if (emptySpace == 0) {
 
-                        buyer.sendMessage("You don't have enough space in your inventory.")
+                        buyer.sendMessage(plugin.config.getString("inventory-full-msg"))
 
                         buyer.closeInventory()
 
                         //Checks the player's balance
                     } else if(!VaultUtils.hasEnoughMoney(buyer,buyPrice.toDouble())){
 
-                        buyer.sendMessage("You don't have enough money to buy this item.")
+                        buyer.sendMessage(plugin.config.getString("not-enough-money-item-msg"))
 
                         buyer.closeInventory()
 
                         //Checks the shop's stock
                     } else if(shopStock == 0){
 
-                        buyer.sendMessage("This shop has no more items to sell.")
+                        buyer.sendMessage(plugin.config.getString("empty-stock-msg"))
 
                         buyer.closeInventory()
 
@@ -158,21 +158,21 @@ object OnInventoryClick: Listener {
                     //Checks the shop space
                     if(shopSpace == 0){
 
-                        buyer.sendMessage("This shop is full.")
+                        buyer.sendMessage(plugin.config.getString("full-stock-msg"))
 
                         buyer.closeInventory()
 
                         //Checks if the player has the items to sell
                     } else if(playerItemQuantity == 0){
 
-                        buyer.sendMessage("You don't have this item to sell.")
+                        buyer.sendMessage(plugin.config.getString("no-items-inventory-msg"))
 
                         buyer.closeInventory()
 
                         //Checks if the shop owner has enough money to buy the item
                     } else if(!VaultUtils.hasEnoughMoney(shopOwner.uuid, sellPrice.toDouble())){
 
-                        buyer.sendMessage("The shop owner doesn't have enough money to buy this item.")
+                        buyer.sendMessage(plugin.config.getString("owner-no-money-msg"))
 
                         buyer.closeInventory()
 

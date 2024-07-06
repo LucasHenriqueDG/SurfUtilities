@@ -1,12 +1,15 @@
 package me.luhen.surfutilities.utils
 
 
+import me.luhen.surfutilities.Main
 import me.ryanhamshire.GriefPrevention.GriefPrevention
 import org.bukkit.Material
 import org.bukkit.block.Sign
 import org.bukkit.entity.Player
 
 object SignUtils {
+
+    val plugin = Main.instance
 
     fun placeSign(seller: Player, sellPrice: Int) {
 
@@ -28,7 +31,7 @@ object SignUtils {
             // Update the block state to apply changes
             state.update()
         } else {
-            seller.sendMessage("§cThis claim is not yours!")
+            seller.sendMessage(plugin.config.getString("not-your-claim-msg"))
         }
 
 

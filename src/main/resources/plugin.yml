@@ -1,9 +1,13 @@
 name: SurfUtilities
-version: '${project.version}'
+version: '0.0.1 Alpha'
 main: me.luhen.surfutilities.Main
 api-version: '1.20'
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib:2.0.0
 commands:
-  venderclaim:
+  sellclaim:
+  shopmenu:
 
+softdepend:
+  - GriefPrevention
+  - ChestShop
