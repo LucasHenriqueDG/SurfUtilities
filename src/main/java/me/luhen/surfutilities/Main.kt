@@ -42,6 +42,7 @@ class Main : JavaPlugin() {
         }
 
         // Plugin startup logic
+        println("[SurfUtilities] Checking plugins...")
 
         if (isPluginInstalled("GriefPrevention")) {
             getCommand("sellclaim")?.setExecutor(SellCommand)
@@ -49,7 +50,7 @@ class Main : JavaPlugin() {
             server.pluginManager.registerEvents(SignBreakListener, this)
 
         } else {
-            logger.info("GriefPrevention is not installed. Some features will be disabled.")
+            logger.info("GriefPrevention is not installed. Some features are going to be disabled.")
         }
 
         if (isPluginInstalled("ChestShop")) {
@@ -58,7 +59,7 @@ class Main : JavaPlugin() {
             server.pluginManager.registerEvents(ShopCreationEvent, this)
 
         } else {
-            logger.info("GriefPrevention is not installed. Some features will be disabled.")
+            logger.info("GriefPrevention is not installed. Some features are going to be disabled.")
         }
 
         server.pluginManager.registerEvents(OnInventoryClick, this)

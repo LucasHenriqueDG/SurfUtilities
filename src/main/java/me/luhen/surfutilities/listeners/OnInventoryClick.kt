@@ -49,12 +49,12 @@ object OnInventoryClick: Listener {
                 val buyer = event.whoClicked as Player
                 val transactionInfo = plugin.currentShop[buyer]
                 val shopOwner = transactionInfo?.get("ownerAccount") as Account
-                val ownerInventory = transactionInfo?.get("ownerInventory") as Inventory
+                val ownerInventory = transactionInfo.get("ownerInventory") as Inventory
                 val clientInventory = transactionInfo["clientInventory"] as Inventory
                 val prices = transactionInfo["exactPrice"] as List<*>
                 val stock = transactionInfo["stock"] as Array<out ItemStack>
-                var buyPrice: BigDecimal?
-                var sellPrice: BigDecimal?
+                val buyPrice: BigDecimal?
+                val sellPrice: BigDecimal?
 
 
                 if(prices.size > 1){

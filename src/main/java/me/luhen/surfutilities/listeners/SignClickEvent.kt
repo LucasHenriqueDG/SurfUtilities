@@ -55,9 +55,17 @@ object SignClickEvent: Listener {
 
                         if(existingClaim != null){
 
+                            event.isCancelled = true
+
                             BuyClaimInventory(sign.getLine(3), sign.getLine(1))
 
                         }
+
+                    } else {
+
+                        event.isCancelled = true
+
+                        event.player.sendMessage("You can't edit this sign. Break it instead.")
 
                     }
 
@@ -66,8 +74,6 @@ object SignClickEvent: Listener {
             }
 
         }
-
-        //Cancel the sign edition
 
     }
 
