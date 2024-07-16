@@ -1,14 +1,17 @@
 package me.luhen.surfutilities.commands
 
 import me.luhen.surfutilities.Main
+import me.luhen.surfutilities.utils.JsonUtils
 import me.luhen.surfutilities.utils.SignUtils
 import me.ryanhamshire.GriefPrevention.GriefPrevention
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import java.io.File
 
 object SellCommand: CommandExecutor {
 
@@ -61,7 +64,16 @@ object SellCommand: CommandExecutor {
 
                 } else {
                     SignUtils.placeSign(player, sellPrice)
+
                     player.sendMessage("Sign placed successfully!")
+
+                    val file = File(Bukkit.getServer().pluginManager.getPlugin("SurfUtilities")!!
+                        .dataFolder, "data/SignLocations.json")
+
+                    val claimId = GriefPrevention.instance.dataStore.getClaimAt(
+                        player.location, true, true, null).id
+
+                    JsonUtils.saveClaimToJson(file, claimId, player.location, args[0].toInt())
 
                 }
 

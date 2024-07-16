@@ -1,18 +1,26 @@
 package me.luhen.surfutilities.utils
 
-import org.bukkit.Location
+data class ClaimEntry(
+    val claimId: Long,
+    val location: LocationData,
+    val value: Int
+)
 
-data class SignLocation(val playerName: String,
-                        val worldName: String,
-                        val x: Double,
-                        val y: Double,
-                        val z: Double) {
-
-    // Function to compare this SignLocation with another Location
-    fun matchesLocation(location: Location): Boolean {
-        return worldName == location.world?.name &&
-                x == location.x &&
-                y == location.y &&
-                z == location.z
+data class LocationData(
+    val worldName: String,
+    val x: Double,
+    val y: Double,
+    val z: Double
+) {
+    // Function to convert from Bukkit's Location to LocationData
+    companion object {
+        fun fromLocation(location: org.bukkit.Location): LocationData {
+            return LocationData(
+                worldName = location.world?.name ?: "unknown",
+                x = location.x,
+                y = location.y,
+                z = location.z
+            )
+        }
     }
 }

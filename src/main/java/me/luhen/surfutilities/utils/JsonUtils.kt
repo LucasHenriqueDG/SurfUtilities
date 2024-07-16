@@ -1,8 +1,8 @@
 package me.luhen.surfutilities.utils
 
 import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
+import me.ryanhamshire.GriefPrevention.GriefPrevention
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import java.io.File
@@ -28,29 +28,35 @@ object JsonUtils {
         }
     }
 
-    fun saveSignLocationToJson(file: File, playerName: String, location: Location) {
-        // Define the data structure
-        val newSignLocation = SignLocation(
-            playerName = playerName,
-            worldName = location.world?.name ?: "unknown",
-            x = location.x,
-            y = location.y,
-            z = location.z
-        )
-
+    fun saveClaimToJson(file: File, claimId: Long, location: Location, value: Int) {
         // Initialize Gson
         val gson = Gson()
 
         // Read existing data from JSON file
-        val existingData: MutableList<SignLocation> = if (file.exists()) {
+        val existingData: MutableList<ClaimEntry> = if (file.exists()) {
             val reader = FileReader(file)
-            gson.fromJson(reader, object : TypeToken<MutableList<SignLocation>>() {}.type) ?: mutableListOf()
+            gson.fromJson(reader, object : TypeToken<MutableList<ClaimEntry>>() {}.type) ?: mutableListOf()
         } else {
             mutableListOf()
         }
 
-        // Add new data to the existing list
-        existingData.add(newSignLocation)
+        // Check if claimId already exists
+        val existingClaim = existingData.find { it.claimId == claimId }
+        if (existingClaim != null) {
+            println("Claim ID $claimId already exists. Skipping addition.")
+            return
+        }
+
+        // Convert Location to LocationData
+        val locationData = LocationData.fromLocation(location)
+
+        // Add new entry
+        val newEntry = ClaimEntry(
+            claimId = claimId,
+            location = locationData,
+            value = value
+        )
+        existingData.add(newEntry)
 
         // Write updated data back to the JSON file
         val writer = FileWriter(file)
@@ -59,23 +65,76 @@ object JsonUtils {
         writer.close()
     }
 
-    fun hasPlayerSignAtLocation(file: File, playerName: String, location: Location): Boolean {
+    fun getClaimsFromJson(file: File): List<ClaimEntry> {
         // Initialize Gson
         val gson = Gson()
 
-        // Read existing data from the JSON file
-        val existingData: List<SignLocation> = if (file.exists()) {
+        // Read data from JSON file
+        val existingData: List<ClaimEntry> = if (file.exists()) {
             val reader = FileReader(file)
-            gson.fromJson(reader, object : TypeToken<List<SignLocation>>() {}.type) ?: emptyList()
+            gson.fromJson(reader, object : TypeToken<List<ClaimEntry>>() {}.type) ?: emptyList()
         } else {
             emptyList()
         }
 
-        // Search for matching sign
-        return existingData.any {
-            it.playerName == playerName && it.matchesLocation(location)
-        }
+        return existingData
     }
 
+    fun removeClaimEntryById(file: File, claimId: Long) {
+
+        val gson = Gson()
+
+        // Read the existing data from the JSON file
+        val existingData = getClaimsFromJson(file) as MutableList
+
+        // Find and remove the claim by claimId
+        val iterator = existingData.iterator()
+
+        var entryFound = false
+
+        var claimEntry: ClaimEntry? = null
+
+        while (iterator.hasNext()) {
+
+            claimEntry = iterator.next()
+
+            if (claimEntry.claimId == claimId) {
+
+                entryFound = true
+
+                break
+            }
+        }
+
+        if (entryFound) {
+
+            // Write the updated data back to the JSON file
+            try {
+
+                val writer = FileWriter(file)
+
+                existingData.remove(claimEntry)
+
+                gson.toJson(existingData, writer)
+
+                writer.flush()
+
+                writer.close()
+
+                println("Claim with ID $claimId has been removed.")
+
+            } catch (e: IOException) {
+
+                println("Failed to write to file: ${e.message}")
+
+            }
+
+        } else {
+
+            println("Claim with ID $claimId was not found.")
+
+        }
+
+    }
 
 }

@@ -20,9 +20,9 @@ empty-stock-msg: "This shop has no more items to sell."
 full-stock-msg: "This shop is full."
 no-items-inventory-msg: "You don't have this item to sell."
 owner-no-money-msg: "The shop owner doesn't have enough money to buy this item."
-sell-item-name-text: "§cSell 1"
+sell-item-name-text: "§cSell 1 for %sellprice%" #%sellprice% placeholder available
 sell-item-lore:
   - "Shift + Click = Sell all"
-buy-item-name-text: "§aBuy 1"
+buy-item-name-text: "§aBuy 1 for %buyprice%" #%buyprice% placeholder available
 buy-item-lore:
   - "Shift + Click = Buy 64"

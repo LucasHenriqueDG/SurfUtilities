@@ -46,7 +46,7 @@ class Main : JavaPlugin() {
         if (isPluginInstalled("GriefPrevention")) {
             getCommand("sellclaim")?.setExecutor(SellCommand)
             server.pluginManager.registerEvents(SignClickEvent, this)
-            server.pluginManager.registerEvents(SignBreakEvent, this)
+            server.pluginManager.registerEvents(SignBreakListener, this)
 
         } else {
             logger.info("GriefPrevention is not installed. Some features will be disabled.")
