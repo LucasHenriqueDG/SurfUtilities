@@ -3,6 +3,7 @@ package me.luhen.surfutilities.listeners
 import com.Acrobot.ChestShop.Events.PreShopCreationEvent
 import me.luhen.surfutilities.Main
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -19,7 +20,8 @@ object ShopCreationEvent: Listener {
 
             event.isCancelled = true
 
-            event.player.sendMessage(plugin.config.getString("shop-creation-sign-error-msg"))
+            event.player.sendMessage(
+                ChatColor.translateAlternateColorCodes('&', plugin.config.getString("shop-creation-sign-error-msg")!!))
 
             event.sign.block.type = Material.AIR
             Bukkit.getWorld(event.sign.location.world!!.name)!!.dropItemNaturally(event.sign.location, ItemStack(Material.OAK_SIGN))
@@ -29,7 +31,7 @@ object ShopCreationEvent: Listener {
 
             event.isCancelled = true
 
-            event.player.sendMessage(plugin.config.getString("shop-creation-error-msg"))
+            event.player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("shop-creation-error-msg")!!))
 
             event.sign.block.type = Material.AIR
             Bukkit.getWorld(event.sign.location.world!!.name)!!.dropItemNaturally(event.sign.location, ItemStack(Material.OAK_SIGN))

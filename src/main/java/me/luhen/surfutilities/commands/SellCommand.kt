@@ -5,6 +5,7 @@ import me.luhen.surfutilities.utils.JsonUtils
 import me.luhen.surfutilities.utils.SignUtils
 import me.ryanhamshire.GriefPrevention.GriefPrevention
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.command.Command
@@ -41,7 +42,8 @@ object SellCommand: CommandExecutor {
         val sellPrice = args[0].toIntOrNull()
 
         if (sellPrice == null) {
-            player.sendMessage(plugin.config.getString("invalid-price-msg") ?: "Invalid price. Please enter a valid number.")
+            player.sendMessage(
+                ChatColor.translateAlternateColorCodes('&', plugin.config.getString("invalid-price-msg")!!))
             return true
         }
 
@@ -81,7 +83,7 @@ object SellCommand: CommandExecutor {
                 player.sendMessage("The block where you want to place the sign is not empty.")
             }
         } else {
-            player.sendMessage(plugin.config.getString("shop-creation-fail-msg") ?: "Failed to create shop. Ensure you are standing on glowstone and have an oak sign in your inventory.")
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("shop-creation-fail-msg")!!))
         }
 
         return true

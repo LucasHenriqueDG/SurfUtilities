@@ -2,6 +2,7 @@ package me.luhen.surfutilities.utils
 
 import me.luhen.surfutilities.Main
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
@@ -17,7 +18,7 @@ object BuyInventory {
         // Create items
         val signItem = ItemStack(Material.OAK_SIGN)
         val signMeta = signItem.itemMeta
-        signMeta?.setDisplayName(plugin.config.getString("middle-item-text"))
+        signMeta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("middle-item-text")!!))
         val signMetaLore = mutableListOf<String>()
         signMetaLore.add("§2Seller: §f${seller}")
         signMetaLore.add("§2Price: §f${price}")
@@ -26,13 +27,13 @@ object BuyInventory {
 
         val redWoolItem = ItemStack(Material.RED_WOOL)
         val redWoolMeta = redWoolItem.itemMeta
-        redWoolMeta?.setDisplayName(plugin.config.getString("cancel-item-text"))
+        redWoolMeta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("cancel-item-text")!!))
         redWoolItem.setItemMeta(redWoolMeta)
 
 
         val greenWoolItem = ItemStack(Material.GREEN_WOOL)
         val greenWoolMeta = greenWoolItem.itemMeta
-        greenWoolMeta?.setDisplayName(plugin.config.getString("buy-item-text")?.replace("%price%", price))
+        greenWoolMeta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("buy-item-text")?.replace("%price%", price)!!))
         greenWoolItem.setItemMeta(greenWoolMeta)
 
         // Set items in specific slots

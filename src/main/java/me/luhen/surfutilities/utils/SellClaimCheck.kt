@@ -5,6 +5,7 @@ import me.ryanhamshire.GriefPrevention.Claim
 import me.ryanhamshire.GriefPrevention.GriefPrevention
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import java.util.UUID
@@ -37,15 +38,15 @@ object SellClaimCheck {
 
 
             if ((sellerPlayer is Player)) {
-                sellerPlayer.sendMessage(plugin.config.getString("sold-claim-msg")?.replace("%buyer%", buyer.name))
+                sellerPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("sold-claim-msg")?.replace("%buyer%", buyer.name)!!))
             }
 
             GriefPrevention.instance.dataStore.changeClaimOwner(claim, buyer.uniqueId)
             VaultUtils.transferMoney(buyer, seller, price.toDouble())
-            buyer.sendMessage(plugin.config.getString("purchase-msg"))
+            buyer.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("purchase-msg")!!))
 
         } else {
-            buyer.sendMessage(plugin.config.getString("not-enough-money-msg"))
+            buyer.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("not-enough-money-msg")!!))
         }
     }
 

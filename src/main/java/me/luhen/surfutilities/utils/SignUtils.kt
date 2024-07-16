@@ -3,6 +3,7 @@ package me.luhen.surfutilities.utils
 
 import me.luhen.surfutilities.Main
 import me.ryanhamshire.GriefPrevention.GriefPrevention
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.block.Sign
 import org.bukkit.entity.Player
@@ -31,7 +32,7 @@ object SignUtils {
             // Update the block state to apply changes
             state.update()
         } else {
-            seller.sendMessage(plugin.config.getString("not-your-claim-msg"))
+            seller.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("not-your-claim-msg")!!))
         }
 
 

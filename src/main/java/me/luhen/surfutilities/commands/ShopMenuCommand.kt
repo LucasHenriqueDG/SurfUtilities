@@ -1,6 +1,7 @@
 package me.luhen.surfutilities.commands
 
 import me.luhen.surfutilities.Main
+import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -17,13 +18,13 @@ object ShopMenuCommand: CommandExecutor {
 
                 plugin.playersWithMenuOff.remove(sender)
 
-                sender.sendMessage(plugin.config.getString("menu-on-msg"))
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("menu-on-msg")!!))
 
             } else {
 
                 plugin.playersWithMenuOff.add(sender)
 
-                sender.sendMessage(plugin.config.getString("menu-off-msg"))
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("menu-off-msg")!!))
 
             }
 

@@ -2,6 +2,7 @@ package me.luhen.surfutilities
 
 import me.luhen.surfutilities.commands.SellCommand
 import me.luhen.surfutilities.commands.ShopMenuCommand
+import me.luhen.surfutilities.commands.SuCommand
 import me.luhen.surfutilities.listeners.*
 import me.luhen.surfutilities.utils.JsonUtils
 import me.luhen.surfutilities.utils.VaultUtils
@@ -63,6 +64,7 @@ class Main : JavaPlugin() {
         }
 
         server.pluginManager.registerEvents(OnInventoryClick, this)
+        getCommand("su")?.setExecutor(SuCommand)
 
     }
 

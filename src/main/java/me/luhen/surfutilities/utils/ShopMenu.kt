@@ -3,6 +3,7 @@ package me.luhen.surfutilities.utils
 import com.Acrobot.ChestShop.Database.Account
 import me.luhen.surfutilities.Main
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
@@ -22,13 +23,14 @@ object ShopMenu {
 
             val sellOne = ItemStack(Material.RED_WOOL)
             val sellOneMeta = sellOne.itemMeta
-            sellOneMeta?.setDisplayName(plugin.config.getString("sell-item-name-text")?.replace(
-                "%sellprice%", prices[1].toString())
+            sellOneMeta?.setDisplayName(
+                ChatColor.translateAlternateColorCodes('&', plugin.config.getString("sell-item-name-text")!!).replace(
+                    "%sellprice%", prices[1].toString())
             )
 
             val loreOne = mutableListOf<String>()
             for(text in (plugin.config.getList("sell-item-lore"))!!){
-                loreOne.add(text.toString())
+                loreOne.add((ChatColor.translateAlternateColorCodes('&', text.toString())))
             }
             sellOneMeta?.lore = loreOne
 
@@ -36,14 +38,15 @@ object ShopMenu {
 
             val buyOneItem = ItemStack(Material.GREEN_WOOL)
             val buyOneItemMeta = buyOneItem.itemMeta
-            buyOneItemMeta?.setDisplayName(plugin.config.getString("buy-item-name-text")?.replace(
-                "%buyprice%", prices[0].toString())
+            buyOneItemMeta?.setDisplayName(
+                ChatColor.translateAlternateColorCodes('&', plugin.config.getString("buy-item-name-text")!!).replace(
+                    "%buyprice%", prices[0].toString())
             )
 
 
             val loreTwo = mutableListOf<String>()
             for(text in (plugin.config.getList("buy-item-lore"))!!){
-                loreTwo.add(text.toString())
+                loreTwo.add((ChatColor.translateAlternateColorCodes('&', text.toString())))
             }
             buyOneItemMeta?.lore = loreTwo
 
@@ -57,13 +60,14 @@ object ShopMenu {
 
             val buyOneItem = ItemStack(Material.GREEN_WOOL)
             val buyOneItemMeta = buyOneItem.itemMeta
-            buyOneItemMeta?.setDisplayName(plugin.config.getString("buy-item-name-text")?.replace(
-                "%buyprice%", prices[0].toString())
+            buyOneItemMeta?.setDisplayName(
+                ChatColor.translateAlternateColorCodes('&', plugin.config.getString("buy-item-name-text")!!).replace(
+                    "%buyprice%", prices[0].toString())
             )
 
             val loreTwo = mutableListOf<String>()
             for(text in (plugin.config.getList("buy-item-lore"))!!){
-                loreTwo.add(text.toString())
+                loreTwo.add((ChatColor.translateAlternateColorCodes('&', text.toString())))
             }
             buyOneItemMeta?.lore = loreTwo
 
@@ -76,13 +80,14 @@ object ShopMenu {
 
             val sellOne = ItemStack(Material.RED_WOOL)
             val sellOneMeta = sellOne.itemMeta
-            sellOneMeta?.setDisplayName(plugin.config.getString("sell-item-name-text")?.replace(
-                "%sellprice%", prices[0].toString())
+            sellOneMeta?.setDisplayName(
+                ChatColor.translateAlternateColorCodes('&', plugin.config.getString("sell-item-name-text")!!).replace(
+                    "%sellprice%", prices[0].toString())
             )
 
             val loreOne = mutableListOf<String>()
             for(text in (plugin.config.getList("sell-item-lore"))!!){
-                loreOne.add(text.toString().replace("%sellprice%", prices[0].toString()))
+                loreOne.add((ChatColor.translateAlternateColorCodes('&', text.toString().replace("%sellprice%", prices[0].toString()))))
             }
             sellOneMeta?.lore = loreOne
 
