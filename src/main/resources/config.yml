@@ -1,5 +1,5 @@
 #GriefPrevention messages
-shop- creation-fail-msg: "§cYou must have an §eoak sign §cin your inventory and stand above a §6glowstone §cto create a sell sign."
+shop-creation-fail-msg: "§cYou must have an §eoak sign §cin your inventory and stand above a §6glowstone §cto create a sell sign."
 invalid-price-msg: "§cInvalid price value, use something from 0 to 1000000000."
 middle-item-text: "§6Are you sure you want to buy this claim?"
 cancel-item-text: "§cCancel"
