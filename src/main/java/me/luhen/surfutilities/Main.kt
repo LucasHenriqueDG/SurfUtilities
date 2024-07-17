@@ -12,12 +12,16 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
+import java.util.UUID
 
 class Main : JavaPlugin() {
 
     var economy: Economy? = null
     var currentShop = mutableMapOf<Player, MutableMap<String,Any>>()
+    var shopCooldownPlayers = mutableMapOf<UUID, Long>()
     var playersWithMenuOff = mutableListOf<Player>()
+
+    val shopCooldownTime = 500L
 
     companion object{
         lateinit var instance: Main

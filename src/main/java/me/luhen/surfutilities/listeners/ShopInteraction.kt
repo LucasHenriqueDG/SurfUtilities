@@ -27,7 +27,6 @@ object ShopInteraction: Listener {
             val priceLine = shopSign.getLine(2)
             val prices = StringToPrice.extractNumbers(priceLine)
             val transactionType = StringToPrice.checkTransactionType(priceLine)
-            println(prices)
 
             transactionInfo["ownerInventory"] = event.ownerInventory
             transactionInfo["clientInventory"] = event.clientInventory

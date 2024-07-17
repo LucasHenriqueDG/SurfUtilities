@@ -121,8 +121,6 @@ object JsonUtils {
 
                 writer.close()
 
-                println("Claim with ID $claimId has been removed.")
-
             } catch (e: IOException) {
 
                 println("Failed to write to file: ${e.message}")

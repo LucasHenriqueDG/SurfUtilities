@@ -45,7 +45,7 @@ object OnInventoryClick: Listener {
 
                 }
 
-             } else if (event.view.title.contains("'s shop") && event.inventory.size <= 9){
+             } else if (event.view.title.contains("'s shop") && event.inventory.size <= 9) {
 
                 val buyer = event.whoClicked as Player
                 val transactionInfo = plugin.currentShop[buyer]
@@ -58,7 +58,7 @@ object OnInventoryClick: Listener {
                 val sellPrice: BigDecimal?
 
 
-                if(prices.size > 1){
+                if (prices.size > 1) {
 
                     buyPrice = prices[0] as BigDecimal
                     sellPrice = prices[1] as BigDecimal
@@ -70,173 +70,213 @@ object OnInventoryClick: Listener {
 
                 event.isCancelled = true
 
-                if(event.currentItem?.type == Material.GREEN_WOOL){
+                val currentTime = System.currentTimeMillis()
 
-                    val emptySpace = InventoryUtils.availableSpaceForItem(clientInventory, stock[0]) - 320
-                    val shopStock = InventoryUtils.countItem(ownerInventory, stock[0])
+                val cooldownEndTime = plugin.shopCooldownPlayers[event.whoClicked.uniqueId]
 
-                    //Checks the player's inventory
-                    if (emptySpace == 0) {
+                if (!(cooldownEndTime != null && currentTime < cooldownEndTime)) {
 
-                        buyer.sendMessage(
-                            ChatColor.translateAlternateColorCodes('&', plugin.config.getString("inventory-full-msg")!!))
+                    if (event.currentItem?.type == Material.GREEN_WOOL) {
 
-                        buyer.closeInventory()
+                        val emptySpace = InventoryUtils.availableSpaceForItem(clientInventory, stock[0]) - 320
+                        val shopStock = InventoryUtils.countItem(ownerInventory, stock[0])
 
-                        //Checks the player's balance
-                    } else if(!VaultUtils.hasEnoughMoney(buyer,buyPrice.toDouble())){
+                        //Checks the player's inventory
+                        if (emptySpace == 0) {
 
-                        buyer.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("not-enough-money-item-msg")!!))
+                            buyer.sendMessage(
+                                ChatColor.translateAlternateColorCodes(
+                                    '&',
+                                    plugin.config.getString("inventory-full-msg")!!
+                                )
+                            )
 
-                        buyer.closeInventory()
+                            buyer.closeInventory()
 
-                        //Checks the shop's stock
-                    } else if(shopStock == 0){
+                            //Checks the player's balance
+                        } else if (!VaultUtils.hasEnoughMoney(buyer, buyPrice.toDouble())) {
 
-                        buyer.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("empty-stock-msg")!!))
+                            buyer.sendMessage(
+                                ChatColor.translateAlternateColorCodes(
+                                    '&',
+                                    plugin.config.getString("not-enough-money-item-msg")!!
+                                )
+                            )
 
-                        buyer.closeInventory()
+                            buyer.closeInventory()
 
-                    } else {
+                            //Checks the shop's stock
+                        } else if (shopStock == 0) {
 
-                        //How many items are going to be bought
-                        var amount = 1
-                        val newStock = stock.copyOf()
-                        var newBuyPrice = buyPrice
+                            buyer.sendMessage(
+                                ChatColor.translateAlternateColorCodes(
+                                    '&',
+                                    plugin.config.getString("empty-stock-msg")!!
+                                )
+                            )
+
+                            buyer.closeInventory()
+
+                        } else {
+
+                            //How many items are going to be bought
+                            var amount = 1
+                            val newStock = stock.copyOf()
+                            var newBuyPrice = buyPrice
 
 
-                        if(event.click.isShiftClick){
+                            if (event.click.isShiftClick) {
 
-                            amount = newStock[0].maxStackSize
+                                amount = newStock[0].maxStackSize
 
-                            //How much space the player has to buy?
-                            if(emptySpace < amount){
+                                //How much space the player has to buy?
+                                if (emptySpace < amount) {
 
-                                amount = emptySpace
+                                    amount = emptySpace
+
+                                }
+
+                                //How much the player can afford to buy?
+                                val affordableAmount = VaultUtils.calculateAffordableAmount(
+                                    buyer.uniqueId,
+                                    buyPrice.toDouble(), amount
+                                )
+
+                                if (affordableAmount < amount) {
+
+                                    amount = affordableAmount
+
+                                }
+
+                                newBuyPrice = amount.toBigDecimal() * newBuyPrice
 
                             }
 
-                            //How much the player can afford to buy?
-                            val affordableAmount = VaultUtils.calculateAffordableAmount(
-                                buyer.uniqueId,
-                                buyPrice.toDouble()
-                                ,amount)
+                            newStock[0].amount = amount
 
-                            if(affordableAmount < amount){
-
-                                amount = affordableAmount
-
-                            }
-
-                            newBuyPrice = amount.toBigDecimal() * newBuyPrice
+                            //Finally, executes the transaction
+                            ChestShop.callEvent(
+                                TransactionEvent(
+                                    PreTransactionEvent(
+                                        transactionInfo["ownerInventory"] as Inventory,
+                                        transactionInfo["clientInventory"] as Inventory,
+                                        newStock,
+                                        newBuyPrice,
+                                        transactionInfo["client"] as Player,
+                                        transactionInfo["ownerAccount"] as Account,
+                                        transactionInfo["sign"] as Sign,
+                                        TransactionType.BUY
+                                    ), transactionInfo["sign"] as Sign
+                                )
+                            )
 
                         }
 
-                        newStock[0].amount = amount
+                    } else if (event.currentItem?.type == Material.RED_WOOL) {
 
-                        //Finally, executes the transaction
-                        ChestShop.callEvent(
-                            TransactionEvent(
-                                PreTransactionEvent(
-                                    transactionInfo["ownerInventory"] as Inventory,
-                                    transactionInfo["clientInventory"] as Inventory,
-                                    newStock,
-                                    newBuyPrice,
-                                    transactionInfo["client"] as Player,
-                                    transactionInfo["ownerAccount"] as Account,
-                                    transactionInfo["sign"] as Sign,
-                                    TransactionType.BUY
-                                ), transactionInfo["sign"] as Sign
+                        val playerItemQuantity = InventoryUtils.countItem(clientInventory, stock[0])
+                        val shopSpace = InventoryUtils.availableSpaceForItem(ownerInventory, stock[0])
+
+                        //Checks the shop space
+                        if (shopSpace == 0) {
+
+                            buyer.sendMessage(
+                                ChatColor.translateAlternateColorCodes(
+                                    '&',
+                                    plugin.config.getString("full-stock-msg")!!
+                                )
                             )
-                        )
 
-                    }
+                            buyer.closeInventory()
 
-                } else if(event.currentItem?.type == Material.RED_WOOL){
+                            //Checks if the player has the items to sell
+                        } else if (playerItemQuantity == 0) {
 
-                    val playerItemQuantity = InventoryUtils.countItem(clientInventory, stock[0])
-                    val shopSpace = InventoryUtils.availableSpaceForItem(ownerInventory, stock[0])
+                            buyer.sendMessage(
+                                ChatColor.translateAlternateColorCodes(
+                                    '&',
+                                    plugin.config.getString("no-items-inventory-msg")!!
+                                )
+                            )
 
-                    //Checks the shop space
-                    if(shopSpace == 0){
+                            buyer.closeInventory()
 
-                        buyer.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("full-stock-msg")!!))
+                            //Checks if the shop owner has enough money to buy the item
+                        } else if (!VaultUtils.hasEnoughMoney(shopOwner.uuid, sellPrice.toDouble())) {
 
-                        buyer.closeInventory()
+                            buyer.sendMessage(
+                                ChatColor.translateAlternateColorCodes(
+                                    '&',
+                                    plugin.config.getString("owner-no-money-msg")!!
+                                )
+                            )
 
-                        //Checks if the player has the items to sell
-                    } else if(playerItemQuantity == 0){
+                            buyer.closeInventory()
 
-                        buyer.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("no-items-inventory-msg")!!))
+                        } else {
 
-                        buyer.closeInventory()
+                            var amount = 1
+                            var newSellPrice = sellPrice
+                            val newStock = stock.copyOf()
 
-                        //Checks if the shop owner has enough money to buy the item
-                    } else if(!VaultUtils.hasEnoughMoney(shopOwner.uuid, sellPrice.toDouble())){
+                            if (event.click.isShiftClick) {
 
-                        buyer.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("owner-no-money-msg")!!))
+                                amount = playerItemQuantity
 
-                        buyer.closeInventory()
+                                //Checks if the player's item quantity is bigger than the shop space
+                                if (amount > shopSpace) {
 
-                    } else {
+                                    amount = shopSpace
 
-                        var amount = 1
-                        var newSellPrice = sellPrice
-                        val newStock = stock.copyOf()
+                                }
 
-                        if(event.click.isShiftClick){
+                                //Checks how many items the shop owner can afford to buy
+                                val affordableQuantity = VaultUtils.calculateAffordableAmount(
+                                    shopOwner.uuid,
+                                    newSellPrice.toDouble(),
+                                    playerItemQuantity
+                                )
 
-                            amount = playerItemQuantity
+                                if (amount > affordableQuantity) {
 
-                            //Checks if the player's item quantity is bigger than the shop space
-                            if(amount > shopSpace){
+                                    amount = affordableQuantity
 
-                                amount = shopSpace
+                                }
+
+                                newSellPrice *= amount.toBigDecimal()
 
                             }
 
-                            //Checks how many items the shop owner can afford to buy
-                            val affordableQuantity = VaultUtils.calculateAffordableAmount(
-                                shopOwner.uuid,
-                                newSellPrice.toDouble(),
-                                playerItemQuantity
+                            newStock[0].amount = amount
+
+
+                            //Finally, executes the transaction
+                            ChestShop.callEvent(
+                                TransactionEvent(
+                                    PreTransactionEvent(
+                                        transactionInfo["ownerInventory"] as Inventory,
+                                        transactionInfo["clientInventory"] as Inventory,
+                                        newStock,
+                                        newSellPrice,
+                                        transactionInfo["client"] as Player,
+                                        transactionInfo["ownerAccount"] as Account,
+                                        transactionInfo["sign"] as Sign,
+                                        TransactionType.SELL
+                                    ), transactionInfo["sign"] as Sign
+                                )
                             )
 
-                            if(amount > affordableQuantity){
-
-                                amount = affordableQuantity
-
-                            }
-
-                            newSellPrice *= amount.toBigDecimal()
 
                         }
 
-                        newStock[0].amount = amount
-
-
-                        //Finally, executes the transaction
-                        ChestShop.callEvent(
-                            TransactionEvent(
-                                PreTransactionEvent(
-                                    transactionInfo["ownerInventory"] as Inventory,
-                                    transactionInfo["clientInventory"] as Inventory,
-                                    newStock,
-                                    newSellPrice,
-                                    transactionInfo["client"] as Player,
-                                    transactionInfo["ownerAccount"] as Account,
-                                    transactionInfo["sign"] as Sign,
-                                    TransactionType.SELL
-                                ), transactionInfo["sign"] as Sign
-                            )
-                        )
-
-
                     }
+
+                    plugin.shopCooldownPlayers[event.whoClicked.uniqueId] = currentTime + plugin.shopCooldownTime
 
                 }
 
-             }
+            }
 
         }
+
 }
