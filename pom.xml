@@ -6,7 +6,7 @@
 
     <groupId>me.luhen</groupId>
     <artifactId>SurfUtilities</artifactId>
-    <version>0.0.2 Alpha</version>
+    <version>0.0.3 Alpha</version>
     <packaging>jar</packaging>
 
     <name>SurfUtilities</name>
