@@ -1,5 +1,5 @@
 name: SurfUtilities
-version: '0.0.1 Alpha'
+version: '0.0.2 Alpha'
 main: me.luhen.surfutilities.Main
 api-version: '1.20'
 libraries:
