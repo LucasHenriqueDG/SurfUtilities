@@ -106,24 +106,32 @@ object OnInventoryClick: Listener {
                             buyer.closeInventory()
 
                             //Checks the shop's stock
-                        } else if (shopStock == 0) {
+                        } else if (shopOwner.name != "Admin Shop" && shopStock == 0){
 
-                            buyer.sendMessage(
-                                ChatColor.translateAlternateColorCodes(
-                                    '&',
-                                    plugin.config.getString("empty-stock-msg")!!
+                                buyer.sendMessage(
+                                    ChatColor.translateAlternateColorCodes(
+                                        '&',
+                                        plugin.config.getString("empty-stock-msg")!!
+                                    )
                                 )
-                            )
 
-                            buyer.closeInventory()
+                                buyer.closeInventory()
+
 
                         } else {
 
                             //How many items are going to be bought
                             var amount = 1
-                            val newStock = stock.copyOf()
-                            var newBuyPrice = buyPrice
 
+                            val newStock = stock.copyOf()
+
+                            if(shopOwner.name == "Admin Shop"){
+
+                                ownerInventory.contents[0].amount = 64
+
+                            }
+
+                            var newBuyPrice = buyPrice
 
                             if (event.click.isShiftClick) {
 
@@ -175,7 +183,17 @@ object OnInventoryClick: Listener {
                     } else if (event.currentItem?.type == Material.RED_WOOL) {
 
                         val playerItemQuantity = InventoryUtils.countItem(clientInventory, stock[0])
-                        val shopSpace = InventoryUtils.availableSpaceForItem(ownerInventory, stock[0])
+                        val shopSpace: Int?
+
+                        if(shopOwner.name != "Admin Shop"){
+
+                            shopSpace = InventoryUtils.availableSpaceForItem(ownerInventory, stock[0])
+
+                        } else {
+
+                            shopSpace = 5000
+
+                        }
 
                         //Checks the shop space
                         if (shopSpace == 0) {
@@ -202,16 +220,17 @@ object OnInventoryClick: Listener {
                             buyer.closeInventory()
 
                             //Checks if the shop owner has enough money to buy the item
-                        } else if (!VaultUtils.hasEnoughMoney(shopOwner.uuid, sellPrice.toDouble())) {
+                        } else if(shopOwner.name != "Admin Shop" &&
+                            !VaultUtils.hasEnoughMoney(shopOwner.uuid, sellPrice.toDouble())){
 
-                            buyer.sendMessage(
-                                ChatColor.translateAlternateColorCodes(
-                                    '&',
-                                    plugin.config.getString("owner-no-money-msg")!!
+                                buyer.sendMessage(
+                                    ChatColor.translateAlternateColorCodes(
+                                        '&',
+                                        plugin.config.getString("owner-no-money-msg")!!
+                                    )
                                 )
-                            )
 
-                            buyer.closeInventory()
+                                buyer.closeInventory()
 
                         } else {
 
@@ -230,12 +249,21 @@ object OnInventoryClick: Listener {
 
                                 }
 
+                                val affordableQuantity: Int?
+
                                 //Checks how many items the shop owner can afford to buy
-                                val affordableQuantity = VaultUtils.calculateAffordableAmount(
-                                    shopOwner.uuid,
-                                    newSellPrice.toDouble(),
-                                    playerItemQuantity
-                                )
+                                if(shopOwner.name == "Admin Shop"){
+
+                                    affordableQuantity = playerItemQuantity
+
+                                } else {
+                                    affordableQuantity = VaultUtils.calculateAffordableAmount(
+                                        shopOwner.uuid,
+                                        newSellPrice.toDouble(),
+                                        playerItemQuantity
+                                    )
+
+                                }
 
                                 if (amount > affordableQuantity) {
 

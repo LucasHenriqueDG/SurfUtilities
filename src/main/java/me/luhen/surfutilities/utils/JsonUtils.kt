@@ -2,7 +2,6 @@ package me.luhen.surfutilities.utils
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import me.ryanhamshire.GriefPrevention.GriefPrevention
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import java.io.File

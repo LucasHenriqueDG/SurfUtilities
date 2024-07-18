@@ -6,22 +6,6 @@ import org.bukkit.inventory.ItemStack
 
 object InventoryUtils {
 
-    fun isInventoryFull(inventory: Inventory): Boolean {
-        // Iterate through each slot in the inventory
-        for (item in inventory.contents) {
-            // Check if the slot is empty (null or AIR)
-            if (item == null || item.type == Material.AIR) {
-                return false
-            }
-            // Check if the item stack is less than the maximum stack size
-            if (item.amount < item.maxStackSize) {
-                return false
-            }
-        }
-        // If no empty or stackable slots are found, the inventory is full
-        return true
-    }
-
     fun countItem(inventory: Inventory, itemToCheck: ItemStack): Int {
         var totalAmount = 0
 
