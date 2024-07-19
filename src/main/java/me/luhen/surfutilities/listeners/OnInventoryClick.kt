@@ -156,11 +156,18 @@ object OnInventoryClick: Listener {
 
                                 }
 
+                                if(shopStock < amount && shopOwner.name != "Admin Shop"){
+
+                                    amount = shopStock
+
+                                }
+
                                 newBuyPrice = amount.toBigDecimal() * newBuyPrice
 
                             }
 
                             newStock[0].amount = amount
+
 
                             //Finally, executes the transaction
                             ChestShop.callEvent(
