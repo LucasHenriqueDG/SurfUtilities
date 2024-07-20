@@ -8,6 +8,7 @@ import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import java.io.File
 import java.util.UUID
 
 object SellClaimCheck {
@@ -32,7 +33,7 @@ object SellClaimCheck {
         val sellerPlayer = getPlayerByUUID(seller)
 
 
-        if (VaultUtils.hasEnoughMoney(buyer, seller, price.toDouble())) {
+        if (VaultUtils.hasEnoughMoney(buyer, price.toDouble())) {
 
             signLocation?.block?.setType(Material.AIR)
 
@@ -42,7 +43,15 @@ object SellClaimCheck {
             }
 
             GriefPrevention.instance.dataStore.changeClaimOwner(claim, buyer.uniqueId)
+
             VaultUtils.transferMoney(buyer, seller, price.toDouble())
+
+            val file = File(
+                Bukkit.getServer().pluginManager.getPlugin("SurfUtilities")!!.dataFolder,
+                "data/SignLocations.json")
+
+            JsonUtils.removeClaimEntryById(file, claim.id)
+
             buyer.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("purchase-msg")!!))
 
         } else {

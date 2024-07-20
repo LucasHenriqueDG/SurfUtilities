@@ -43,6 +43,10 @@ object OnInventoryClick: Listener {
 
                     event.whoClicked.closeInventory()
 
+                } else if(event.currentItem?.type == Material.RED_WOOL){
+
+                    event.whoClicked.closeInventory()
+
                 }
 
              } else if (event.view.title.contains("'s shop") && event.inventory.size <= 9) {

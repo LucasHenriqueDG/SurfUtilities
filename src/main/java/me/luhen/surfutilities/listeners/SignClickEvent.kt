@@ -57,7 +57,7 @@ object SignClickEvent: Listener {
 
                             event.isCancelled = true
 
-                            BuyClaimInventory(sign.getLine(3), sign.getLine(1))
+                            event.player.openInventory(BuyClaimInventory(sign.getLine(3), sign.getLine(1)))
 
                         }
 
