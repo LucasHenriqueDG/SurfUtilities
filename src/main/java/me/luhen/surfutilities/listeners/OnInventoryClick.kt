@@ -1,12 +1,11 @@
 package me.luhen.surfutilities.listeners
 
 import com.Acrobot.ChestShop.ChestShop
-import com.Acrobot.ChestShop.Database.Account
 import com.Acrobot.ChestShop.Events.PreTransactionEvent
 import com.Acrobot.ChestShop.Events.TransactionEvent
 import com.Acrobot.ChestShop.Events.TransactionEvent.TransactionType
-import me.luhen.surfutilities.Main
-import me.luhen.surfutilities.utils.SellClaimCheck.SellClaimCheckBuyer
+import me.luhen.surfutilities.SurfUtilities
+import me.luhen.surfutilities.utils.SellClaimCheck.sellClaimCheckBuyer
 import me.ryanhamshire.GriefPrevention.GriefPrevention
 import org.bukkit.Material
 import org.bukkit.block.Sign
@@ -17,13 +16,12 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import me.luhen.surfutilities.utils.InventoryUtils
 import me.luhen.surfutilities.utils.VaultUtils
 import org.bukkit.ChatColor
-import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.ItemStack
+import org.bukkit.block.sign.Side
 import java.math.BigDecimal
 
 object OnInventoryClick: Listener {
 
-    val plugin = Main.instance
+    val plugin = SurfUtilities.instance
 
         @EventHandler
         fun onInventoryClick(event: InventoryClickEvent) {
@@ -35,10 +33,10 @@ object OnInventoryClick: Listener {
                 if(event.currentItem?.type == Material.GREEN_WOOL){
 
                     val buyer = event.whoClicked as Player
-                    val location = plugin.curentClaim.get(buyer)
-                    val price = (plugin.curentClaim[event.whoClicked]?.block?.state as Sign).getLine(3)
+                    val location = plugin.curentClaim[buyer]
+                    val price = (plugin.curentClaim[event.whoClicked]?.block?.state as Sign).getSide(Side.FRONT).getLine(3)
 
-                    SellClaimCheckBuyer(buyer, GriefPrevention.instance.dataStore.getClaimAt(
+                    sellClaimCheckBuyer(buyer, GriefPrevention.instance.dataStore.getClaimAt(
                         location, true, true, null), price.toInt())
 
                     event.whoClicked.closeInventory()
@@ -53,23 +51,23 @@ object OnInventoryClick: Listener {
 
                 val buyer = event.whoClicked as Player
                 val transactionInfo = plugin.currentShop[buyer]
-                val shopOwner = transactionInfo?.get("ownerAccount") as Account
-                val ownerInventory = transactionInfo.get("ownerInventory") as Inventory
-                val clientInventory = transactionInfo["clientInventory"] as Inventory
-                val prices = transactionInfo["exactPrice"] as List<*>
-                val stock = transactionInfo["stock"] as Array<out ItemStack>
+                val shopOwner = transactionInfo!!.owner
+                val ownerInventory = transactionInfo.shopInv
+                val clientInventory = transactionInfo.client.inventory
+                val prices = transactionInfo.price
+                val stock = transactionInfo.stock
                 val buyPrice: BigDecimal?
                 val sellPrice: BigDecimal?
 
 
                 if (prices.size > 1) {
 
-                    buyPrice = prices[0] as BigDecimal
-                    sellPrice = prices[1] as BigDecimal
+                    buyPrice = prices[0]
+                    sellPrice = prices[1]
 
                 } else {
-                    buyPrice = prices[0] as BigDecimal
-                    sellPrice = prices[0] as BigDecimal
+                    buyPrice = prices[0]
+                    sellPrice = prices[0]
                 }
 
                 event.isCancelled = true
@@ -177,15 +175,15 @@ object OnInventoryClick: Listener {
                             ChestShop.callEvent(
                                 TransactionEvent(
                                     PreTransactionEvent(
-                                        transactionInfo["ownerInventory"] as Inventory,
-                                        transactionInfo["clientInventory"] as Inventory,
+                                        transactionInfo.shopInv,
+                                        transactionInfo.client.inventory,
                                         newStock,
                                         newBuyPrice,
-                                        transactionInfo["client"] as Player,
-                                        transactionInfo["ownerAccount"] as Account,
-                                        transactionInfo["sign"] as Sign,
+                                        transactionInfo.client,
+                                        transactionInfo.owner,
+                                        transactionInfo.sign,
                                         TransactionType.BUY
-                                    ), transactionInfo["sign"] as Sign
+                                    ), transactionInfo.sign
                                 )
                             )
 
@@ -194,15 +192,14 @@ object OnInventoryClick: Listener {
                     } else if (event.currentItem?.type == Material.RED_WOOL) {
 
                         val playerItemQuantity = InventoryUtils.countItem(clientInventory, stock[0])
-                        val shopSpace: Int?
 
-                        if(shopOwner.name != "Admin Shop"){
+                        val shopSpace: Int = if(shopOwner.name != "Admin Shop"){
 
-                            shopSpace = InventoryUtils.availableSpaceForItem(ownerInventory, stock[0])
+                            InventoryUtils.availableSpaceForItem(ownerInventory, stock[0])
 
                         } else {
 
-                            shopSpace = 5000
+                            5000
 
                         }
 
@@ -260,15 +257,13 @@ object OnInventoryClick: Listener {
 
                                 }
 
-                                val affordableQuantity: Int?
-
                                 //Checks how many items the shop owner can afford to buy
-                                if(shopOwner.name == "Admin Shop"){
+                                val affordableQuantity: Int = if(shopOwner.name == "Admin Shop"){
 
-                                    affordableQuantity = playerItemQuantity
+                                    playerItemQuantity
 
                                 } else {
-                                    affordableQuantity = VaultUtils.calculateAffordableAmount(
+                                    VaultUtils.calculateAffordableAmount(
                                         shopOwner.uuid,
                                         newSellPrice.toDouble(),
                                         playerItemQuantity
@@ -293,15 +288,15 @@ object OnInventoryClick: Listener {
                             ChestShop.callEvent(
                                 TransactionEvent(
                                     PreTransactionEvent(
-                                        transactionInfo["ownerInventory"] as Inventory,
-                                        transactionInfo["clientInventory"] as Inventory,
+                                        transactionInfo.shopInv,
+                                        transactionInfo.client.inventory,
                                         newStock,
                                         newSellPrice,
-                                        transactionInfo["client"] as Player,
-                                        transactionInfo["ownerAccount"] as Account,
-                                        transactionInfo["sign"] as Sign,
+                                        transactionInfo.client,
+                                        transactionInfo.owner,
+                                        transactionInfo.sign,
                                         TransactionType.SELL
-                                    ), transactionInfo["sign"] as Sign
+                                    ), transactionInfo.sign
                                 )
                             )
 

@@ -5,6 +5,7 @@ import me.luhen.surfutilities.commands.ShopMenuCommand
 import me.luhen.surfutilities.commands.SuCommand
 import me.luhen.surfutilities.listeners.*
 import me.luhen.surfutilities.utils.JsonUtils
+import me.luhen.surfutilities.utils.Transaction
 import me.luhen.surfutilities.utils.VaultUtils
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
@@ -14,17 +15,19 @@ import org.bukkit.plugin.Plugin
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.UUID
 
-class Main : JavaPlugin() {
+class SurfUtilities : JavaPlugin() {
 
     var economy: Economy? = null
-    var currentShop = mutableMapOf<Player, MutableMap<String,Any>>()
+    var currentShop = mutableMapOf<Player, Transaction>()
     var shopCooldownPlayers = mutableMapOf<UUID, Long>()
     var playersWithMenuOff = mutableListOf<Player>()
 
     val shopCooldownTime = 500L
 
     companion object{
-        lateinit var instance: Main
+
+        lateinit var instance: SurfUtilities
+
     }
 
     init {

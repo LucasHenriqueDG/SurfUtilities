@@ -1,13 +1,13 @@
 package me.luhen.surfutilities.commands
 
-import me.luhen.surfutilities.Main
+import me.luhen.surfutilities.SurfUtilities
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 
 object SuCommand: CommandExecutor {
 
-    val plugin = Main.instance
+    val plugin = SurfUtilities.instance
 
     override fun onCommand(sender: CommandSender, command: Command, string: String, args: Array<out String>): Boolean {
 

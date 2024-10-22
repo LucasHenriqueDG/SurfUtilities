@@ -1,16 +1,17 @@
 package me.luhen.surfutilities.utils
 
-import me.luhen.surfutilities.Main
+import me.luhen.surfutilities.SurfUtilities
 import java.math.BigDecimal
+import java.util.*
 
 
 object StringToPrice {
 
-    val plugin = Main.instance
+    val plugin = SurfUtilities.instance
 
-    fun extractNumbers(input: String?): Any? {
+    fun extractNumbers(input: String?): MutableList<BigDecimal> {
 
-        val newString = input?.toLowerCase()
+        val newString = input?.lowercase(Locale.getDefault())
         val prices = mutableListOf<BigDecimal>()
 
         if (newString != null) {
@@ -48,16 +49,15 @@ object StringToPrice {
 
     fun checkTransactionType(string: String): String{
 
-        if(string.toLowerCase().contains("b") && string.toLowerCase().contains("s")){
-            return "both"
-        } else if(string.toLowerCase().contains("b")){
-            return "buy"
+        return if(string.lowercase(Locale.getDefault()).contains("b") && string.lowercase(Locale.getDefault()).contains("s")){
+            "both"
+        } else if(string.lowercase(Locale.getDefault()).contains("b")){
+            "buy"
         } else {
-            return "sell"
+            "sell"
         }
 
     }
-
 
 }
 

@@ -1,9 +1,8 @@
 package me.luhen.surfutilities.utils
 
-import me.luhen.surfutilities.Main
+import me.luhen.surfutilities.SurfUtilities
 import me.ryanhamshire.GriefPrevention.Claim
 import me.ryanhamshire.GriefPrevention.GriefPrevention
-import net.milkbowl.vault.economy.Economy
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
@@ -13,8 +12,8 @@ import java.util.UUID
 
 object SellClaimCheck {
 
-    val plugin = Main.instance
-    fun SellClaimCheckBuyer(buyer: Player, claim: Claim, price: Int) {
+    val plugin = SurfUtilities.instance
+    fun sellClaimCheckBuyer(buyer: Player, claim: Claim, price: Int) {
         val signLocation = plugin.curentClaim[buyer]
         val seller = claim.getOwnerID()
 
@@ -28,14 +27,12 @@ object SellClaimCheck {
             }
         }
 
-        val econ: Economy? = null
-
         val sellerPlayer = getPlayerByUUID(seller)
 
 
         if (VaultUtils.hasEnoughMoney(buyer, price.toDouble())) {
 
-            signLocation?.block?.setType(Material.AIR)
+            signLocation?.block?.type = Material.AIR
 
 
             if ((sellerPlayer is Player)) {

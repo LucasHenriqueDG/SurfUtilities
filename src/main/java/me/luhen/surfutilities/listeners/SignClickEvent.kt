@@ -1,12 +1,13 @@
 package me.luhen.surfutilities.listeners
 
-import me.luhen.surfutilities.Main
-import me.luhen.surfutilities.utils.BuyInventory.BuyClaimInventory
+import me.luhen.surfutilities.SurfUtilities
+import me.luhen.surfutilities.utils.BuyInventory.buyClaimInventory
 import me.luhen.surfutilities.utils.JsonUtils
 import me.ryanhamshire.GriefPrevention.GriefPrevention
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Sign
+import org.bukkit.block.sign.Side
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
@@ -15,7 +16,7 @@ import java.io.File
 
 object SignClickEvent: Listener {
 
-    val plugin = Main.instance
+    val plugin = SurfUtilities.instance
 
     @EventHandler
     fun signClickEvent(event: PlayerInteractEvent){
@@ -24,7 +25,7 @@ object SignClickEvent: Listener {
 
             if(event.clickedBlock?.type == Material.OAK_SIGN){
 
-                val sign = event.clickedBlock!!.state as Sign
+                val sign = (event.clickedBlock!!.state as Sign)
 
                 if(plugin.curentClaim.containsKey(event.player)){
 
@@ -35,9 +36,9 @@ object SignClickEvent: Listener {
                 //Adds the player to a map to attach it to the claim being commercialized
                 plugin.curentClaim[event.player] = sign.location
 
-                if(sign.getLine(0).equals("Buy From", true)) {
+                if(sign.getSide(Side.FRONT).getLine(0).equals("Buy From", true)) {
 
-                    if(sign.getLine(1) != event.player.name){
+                    if(sign.getSide(Side.FRONT).getLine(1) != event.player.name){
 
                         //Get the plugin data folder
                         val file = File(
@@ -57,7 +58,12 @@ object SignClickEvent: Listener {
 
                             event.isCancelled = true
 
-                            event.player.openInventory(BuyClaimInventory(sign.getLine(3), sign.getLine(1)))
+                            event.player.openInventory(
+                                buyClaimInventory(
+                                    sign.getSide(Side.FRONT).getLine(3),
+                                    sign.getSide(Side.FRONT).getLine(1)
+                                )
+                            )
 
                         }
 

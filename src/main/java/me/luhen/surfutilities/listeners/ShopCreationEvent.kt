@@ -1,7 +1,7 @@
 package me.luhen.surfutilities.listeners
 
 import com.Acrobot.ChestShop.Events.PreShopCreationEvent
-import me.luhen.surfutilities.Main
+import me.luhen.surfutilities.SurfUtilities
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack
 
 object ShopCreationEvent: Listener {
 
-    val plugin = Main.instance
+    val plugin = SurfUtilities.instance
 
     @EventHandler
     fun onShopCreation(event: PreShopCreationEvent){

@@ -1,6 +1,6 @@
 package me.luhen.surfutilities.utils
 
-import me.luhen.surfutilities.Main
+import me.luhen.surfutilities.SurfUtilities
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
@@ -9,9 +9,9 @@ import org.bukkit.inventory.ItemStack
 
 object BuyInventory {
 
-    val plugin = Main.instance
+    val plugin = SurfUtilities.instance
 
-    fun BuyClaimInventory(price: String, seller: String): Inventory {
+    fun buyClaimInventory(price: String, seller: String): Inventory {
         // Create an inventory with 9 slots
         val inventory = Bukkit.createInventory(null, 9, "Buy Claim")
 
